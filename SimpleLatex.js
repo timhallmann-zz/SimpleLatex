@@ -1,6 +1,6 @@
 /*
 SimpleLatex
-v1.1.0
+v1.2.0
 
 SimpleLatex provides an slightly easier way for writing mathematical Expressions
 in LaTeX.
@@ -52,359 +52,330 @@ let matchingParentheses = {
 
 /* Definition of the functions
     key : name of function
-    value : replacement or ID for replacement
+    value : {args : Bool, val : replacement (default is func{args})}
 
-    IDs:
-    00: f
-    10: \f
-    20: \f{0} (unparsed)
-    30: \f{0}
-    40: \f{0}{1}
-    50: \f_{0}^{1}
-    51: \f_{0}
-    60: \f[1]{0}
-    70: \begin{f}{1}{0}\end{f}
-    71: \begin{f}{0}\end{f}
-
+    Replacement is done by adding "\" + value + " "
+    (func, args, args0, args1, ... will be replaced by the according func/args)
 */
 
 let functionsByTopic = {
-    "misc" : {
-        "%" : 10,
-        "    " : "\\quad ",
-        "°" : "\\degree ",
-    },
-    "accents" : {
-        "hat" : 30,
-        "bar" : 30,
-        "dot" : 30,
-        "ddot" : 30,
-        "vec" : 30,
-        "overline" : 30,
-        "underline" : 30,
-    },
-    "delimiters" : {
-        "\\|" : 10,
-        "\\b" : "\\backslash ",
-
-        "lgroup" : 10,
-        "rgroup" : 10,
-        "lbrack" : 10,
-        "rbrack" : 10,
-        "lbrace" : 10,
-        "rbrace" : 10,
-        "lceil" : 10,
-        "rceil" : 10,
-        "lfloor" : 10,
-        "rfloor" : 10,
-        "urcorner" : 10,
-        "llcorner" : 10,
-        "lrcorner" : 10,
-        "lmoustache" : 10,
-        "rmoustache" : 10,
-        "uparrow" : 10,
-        "downarrow" : 10,
-        "updownarrow" : 10,
-        "Downarrow" : 10,
-        "Updownarrow" : 10,
-    },
-    "environments" : {
-        "matrix" : 71,
-        "pmatrix" : 71,
-        "vmatrix" : 71,
-        "Bmatrix" : 71,
-        "bmatrix" : 71,
-        "Vmatrix" : 71,
-
-        "array" : 70,
-        "darray" : 70,
-        "aligned" : 70,
-        "gathered" : 70,
-        "cases" : 70,
-        "dcases" : 70,
-    },
-    "letters" : {
-        "Gamma" : 10,
-        "Delta" : 10,
-        "Theta" : 10,
-        "Lambda" : 10,
-        "Xi" : 10,
-        "Pi" : 10,
-        "Sigma" : 10,
-        "Upsilon" : 10,
-        "Phi" : 10,
-        "Psi" : 10,
-        "Omega" : 10,
-
-        "alpha" : 10,
-        "beta" : 10,
-        "gamma" : 10,
-        "delta" : 10,
-        "epsilon" : 10,
-        "zeta" : 10,
-        "eta" : 10,
-        "theta" : 10,
-        "iota" : 10,
-        "kappa" : 10,
-        "lambda" : 10,
-        "mu" : 10,
-        "nu" : 10,
-        "xi" : 10,
-        "omicron" : 10,
-        "pi" : 10,
-        "rho" : 10,
-        "sigma" : 10,
-        "tau" : 10,
-        "upsilon" : 10,
-        "phi" : 10,
-        "chi" : 10,
-        "psi" : 10,
-        "omega" : 10,
-        "varepsilon" : 10,
-        "varkappa" : 10,
-        "vartheta" : 10,
-        "varpi" : 10,
-        "varrho" : 10,
-        "varsigma" : 10,
-        "varphi" : 10,
-        "digamma" : 10,
-
-        "imath" : 10,
-        "jmath" : 10,
-        "aleph" : 10,
-        "beth" : 10,
-        "gimel" : 10,
-        "daleth" : 10,
-        "eth" : 10,
-        "Finv" : 10,
-        "Game" : 10,
-        "ell" : 10,
-        "hbar" : 10,
-        "hslash" : 10,
-        "Im" : 10,
-        "Re" : 10,
-        "wp" : 10,
-        "partial" : 10,
-        "nabla" : 10,
-        "Bbbk" : 10,
-        "infty" : 10,
-    },
-    "annotation" : {
-        "cancel" : 30,
-        "bcancel" : 30,
-        "xcancel" : 30,
-        "sout" : 30,
-        "overbrace" : 30,
-        "underbrace" : 30,
-        "boxed" : 30,
-    },
-    "overlap" : {
-        "llap" : 30,
-        "rlap" : 40,
-    },
-    "spacing" : {
-        "\\!" : 0,
-        "\\," : 0,
-        "\\:" : 0,
-        "\\;" : 0,
-        "enspace" : 10,
-        "qquad" : 10,
-        "~" : 0,
-        "space" : 10,
-        "phantom" : 30,
-        "kern" : 30,
-        "stackrel" : 40,
-        "overset" : 40,
-        "underset" : 40,
-        "atop" : 10,
-    },
-    "logic" : {
-        "forall" : 10,
-        "exists" : 10,
-        "nexists" : 10,
-        "in" : 10,
-        "notin" : 10,
-        "nin" : "\\notin ",
-        "ni" : 10,
-        "complement" : 10,
-        "subset" : 10,
-        "supset" : 10,
-        "mid" : 10,
-        "land" : 10,
-        "lor" : 10,
-        "therefore" : 10,
-        "because" : 10,
-        "mapsto" : 10,
-        "to" : 10,
-        "gets" : 10,
-        "leftrightarrow" : 10,
-        "neg" : 10,
-        "lnot" : 10,
-        "implies" : 10,
-        "impliedby" : 10,
-        "iff" : 10,
-    },
-    "set" : {
-        "emptyset" : 10,
-        "varnothing" : 10,
-        "\\N" : "\\mathbb{N}",
-        "\\Z" : "\\mathbb{Z}",
-        "\\Q" : "\\mathbb{Q}",
-        "\\A" : "\\mathbb{A}",
-        "\\R" : "\\mathbb{R}",
-        "\\C" : "\\mathbb{C}",
-        "\\H" : "\\mathbb{H}",
-        "\\O" : "\\mathbb{O}",
-        "\\S" : "\\mathbb{S}",
-    },
-    "bigOperators" : {
-        "sum" : 50,
-        "int" : 50,
-        "iint" : 50,
-        "iiint" : 50,
-        "oint" : 50,
-        "intop" : 50,
-        "smallint" : 50,
-        "prod" : 50,
-        "coprod" : 50,
-        "bigvee" : 50,
-        "bigwedge" : 50,
-        "bigcap" : 50,
-        "bigcup" : 50,
-        "bigsqcup" : 50,
-        "bigotimes" : 50,
-        "bigoplus" : 50,
-        "bigodot" : 50,
-        "biguplus" : 50,
-    },
-    "binOperators" : {
-        "mod" : 10,
-    },
-    "binomialCoefficients" : {
-        "binom" : 40,
-        "choose" : 30,
-        "dbinom" : 40,
-        "tbinom" : 40,
-    },
-    "operators" : {
-        "pm" : 10,
-        "mp" : 10,
-        "times" : 10,
-        "sqrt" : 60,
-
-        "arcsin" : 10,
-        "arccos" : 10,
-        "arctan" : 10,
-        "arctg" : 10,
-        "arcctg" : 10,
-        "arg" : 10,
-        "ch" : 10,
-        "cos" : 10,
-        "cosec" : 10,
-        "cosh" : 10,
-        "cot" : 10,
-        "cotg" : 10,
-        "coth" : 10,
-        "csc" : 10,
-        "ctg" : 10,
-        "cth" : 10,
-        "deg" : 10,
-        "dim" : 10,
-        "exp" : 10,
-        "hom" : 10,
-        "ker" : 10,
-        "lg" : 10,
-        "ln" : 10,
-        "log" : 51,
-        "sec" : 10,
-        "sin" : 10,
-        "sinh" : 10,
-        "sh" : 10,
-        "tan" : 10,
-        "tanh" : 10,
-        "tg" : 10,
-        "th" : 10,
-
-        "det" : 51,
-        "gcd" : 51,
-        "inf" : 51,
-        "lim" : 51,
-        "liminf" : 51,
-        "limsup" : 51,
-        "max" : 51,
-        "min" : 51,
-        "Pr" : 51,
-        "sup" : 51,
-    },
-    "relations" : {
-        "==" : "\\equiv ",
-        "equiv" : 10,
-        "~=" : "\\approx ",
-        "approx" : 10,
-        "approxeq" : 10,
-        "asymp" : 10,
-        "between" : 10,
-        "<=" : "\\leq",
-        "leq" : 10,
-        "=>" : "\\geq",
-        "geq" : 10,
-        "owns" : 10,
-        "parallel" : 10,
-        "perp" : 10,
-
-        "!=" : "\\neq ",
-        "neq" : 10,
-        "nparallel" : 10,
-    },
-    "extensibleArrows" : {
-        "xrightarrow" : 60,
-        "xleftarrow" : 60,
-        "xleftrightarrow" : 60,
-    },
-    "color" : {
-        "color" : 20,
-        "textcolor" : 40,
-    },
-    "font" : {
-        "mathrm" : 30,
-        "textrm" : 30,
-        "rm" : 30,
-    },
-    "size" : {
-        "Huge" : 10,
-        "huge " : 10,
-        "LARGE" : 10,
-        "Large" : 10,
-        "large" : 10,
-        "normalsize" : 10,
-        "small" : 10,
-        "footnotesize" : 10,
-        "scriptsize" : 10,
-        "tiny" : 10,
-    },
-    "style" : {
-        "displaystyle" : 10,
-        "textstyle" : 10,
-        "scriptstyle" : 10,
-        "scriptscriptstyle" : 10,
-        "text" : 20,
-        "textnormal" : 20,
-    },
-    "symbols" : {
-        "cdots" : 10,
-        "ddots" : 10,
-        "ldots" : 10,
-        "vdots" : 10,
-        "angle" : 10,
-        "measuredangle" : 10,
-        "sphericalangle" : 10,
-        "checkmark" : 10,
-        "diagdown" : 10,
-        "diagup" : 10,
-    }
+	"misc": {
+		"%": {v: 0},
+		"    ": {v: "quad"},
+		"°": {v: "degree"}
+	},
+	"accents": {
+		"hat": {a: 1, v: 0},
+		"bar": {a: 1, v: 0},
+		"dot": {a: 1, v: 0},
+		"ddot": {a: 1, v: 0},
+		"vec": {a: 1, v: 0},
+		"overline": {a: 1, v: 0},
+		"underline": {a: 1, v: 0}
+	},
+	"delimiters": {
+		"\\|": {a: 1, v: "|"},
+		"\\b": {a: 1, v: "backslash"},
+		"ceil": {a: 1, v: "lfunc arg \\rfunc"},
+		"floor": {a: 1, v: "lfunc arg \\rfunc"},
+		"group": {a: 1, v: "lfunc arg \\rfunc"},
+		"brack": {a: 1, v: "lfunc arg \\rfunc"},
+		"brace": {a: 1, v: "lfunc arg \\rfunc"},
+		"ucorner": {a: 1, v: "ulcorner arg \\urcorner"},
+		"lcorner": {a: 1, v: "llcorner arg \\lrcorner"},
+		"moustache": {a: 1, v: "lfunc arg \\rfunc"},
+		"uparrow": {a: 1, v: 0},
+		"downarrow": {a: 1, v: 0},
+		"updownarrow": {a: 1, v: 0},
+		"Downarrow": {a: 1, v: 0},
+		"Updownarrow": {a: 1, v: 0}
+	},
+	"environments": {
+		"matrix": {a: 1, v: 2},
+		"pmatrix": {a: 1, v: 2},
+		"vmatrix": {a: 1, v: 2},
+		"Bmatrix": {a: 1, v: 2},
+		"bmatrix": {a: 1, v: 2},
+		"Vmatrix": {a: 1, v: 2},
+		"array": {a: 1, v: 3},
+		"darray": {a: 1, v: 3},
+		"aligned": {a: 1, v: 4},
+		"gathered": {a: 1, v: 4},
+		"cases": {a: 1, v: 4},
+		"dcases": {a: 1, v: 4}
+	},
+	"letters": {
+		"Gamma": {v: 0},
+		"Delta": {v: 0},
+		"Theta": {v: 0},
+		"Lambda": {v: 0},
+		"Xi": {v: 0},
+		"Pi": {v: 0},
+		"Sigma": {v: 0},
+		"Upsilon": {v: 0},
+		"Phi": {v: 0},
+		"Psi": {v: 0},
+		"Omega": {v: 0},
+		"alpha": {v: 0},
+		"beta": {v: 0},
+		"gamma": {v: 0},
+		"delta": {v: 0},
+		"epsilon": {v: 0},
+		"zeta": {v: 0},
+		"eta": {v: 0},
+		"theta": {v: 0},
+		"iota": {v: 0},
+		"kappa": {v: 0},
+		"lambda": {v: 0},
+		"mu": {v: 0},
+		"nu": {v: 0},
+		"xi": {v: 0},
+		"omicron": {v: 0},
+		"pi": {v: 0},
+		"rho": {v: 0},
+		"sigma": {v: 0},
+		"tau": {v: 0},
+		"upsilon": {v: 0},
+		"phi": {v: 0},
+		"chi": {v: 0},
+		"psi": {v: 0},
+		"omega": {v: 0},
+		"varepsilon": {v: 0},
+		"varkappa": {v: 0},
+		"vartheta": {v: 0},
+		"varpi": {v: 0},
+		"varrho": {v: 0},
+		"varsigma": {v: 0},
+		"varphi": {v: 0},
+		"digamma": {v: 0},
+		"imath": {v: 0},
+		"jmath": {v: 0},
+		"aleph": {v: 0},
+		"beth": {v: 0},
+		"gimel": {v: 0},
+		"daleth": {v: 0},
+		"eth": {v: 0},
+		"Finv": {v: 0},
+		"Game": {v: 0},
+		"ell": {v: 0},
+		"hbar": {v: 0},
+		"hslash": {v: 0},
+		"Im": {v: 0},
+		"Re": {v: 0},
+		"wp": {v: 0},
+		"partial": {v: 0},
+		"nabla": {v: 0},
+		"Bbbk": {v: 0},
+		"infty": {v: 0}
+	},
+	"annotation": {
+		"cancel": {a: 1, v: 0},
+		"bcancel": {a: 1, v: 0},
+		"xcancel": {a: 1, v: 0},
+		"sout": {a: 1, v: 0},
+		"overbrace": {a: 1, v: 0},
+		"underbrace": {a: 1, v: 0},
+		"boxed": {a: 1, v: 0}
+	},
+	"overlap": {
+		"llap": {a: 1, v: 0},
+		"rlap": {a: 1, v: "func{args0}{args2}"}
+	},
+	"spacing": {
+		"enspace": {a: 1, v: 0},
+		"qquad": {a: 1, v: 0},
+		"space": {a: 1, v: 0},
+		"phantom": {a: 1, v: 0},
+		"kern": {a: 1, v: 0},
+		"stackrel": {a: 1, v: "func{args0}{args1}"},
+		"overset": {a: 1, v: "func{args0}{args1}"},
+		"underset": {a: 1, v: "func{args0}{args1}"},
+		"atop": {a: 1, v: 0}
+	},
+	"logic": {
+		"forall": {v: 0},
+		"exists": {v: 0},
+		"nexists": {v: 0},
+		"in": {v: 0},
+		"notin": {v: 0},
+		"nin": {v: "notin"},
+		"ni": {v: 0},
+		"complement": {v: 0},
+		"subset": {v: 0},
+		"supset": {v: 0},
+		"mid": {v: 0},
+		"land": {v: 0},
+		"lor": {v: 0},
+		"therefore": {v: 0},
+		"because": {v: 0},
+		"mapsto": {v: 0},
+		"to": {v: 0},
+		"gets": {v: 0},
+		"leftrightarrow": {v: 0},
+		"neg": {v: 0},
+		"lnot": {v: 0},
+		"implies": {v: 0},
+		"impliedby": {v: 0},
+		"iff": {v: 0}
+	},
+	"set": {
+		"emptyset": {v: 0},
+		"varnothing": {v: 0},
+		"\\N": {v: "mathbb{N}"},
+		"\\Z": {v: "mathbb{Z}"},
+		"\\Q": {v: "mathbb{Q}"},
+		"\\A": {v: "mathbb{A}"},
+		"\\R": {v: "mathbb{R}"},
+		"\\C": {v: "mathbb{C}"},
+		"\\H": {v: "mathbb{H}"},
+		"\\O": {v: "mathbb{O}"},
+		"\\S": {v: "mathbb{S}"}
+	},
+	"bigOperators": {
+		"sum": {a: 1, v: "func_{args0}^{args1}"},
+		"int": {a: 1, v: "func_{args0}^{args1}"},
+		"iint": {a: 1, v: "func_{args0}^{args1}"},
+		"iiint": {a: 1, v: "func_{args0}^{args1}"},
+		"oint": {a: 1, v: "func_{args0}^{args1}"},
+		"intop": {a: 1, v: "func_{args0}^{args1}"},
+		"smallint": {a: 1, v: "func_{args0}^{args1}"},
+		"prod": {a: 1, v: "func_{args0}^{args1}"},
+		"coprod": {a: 1, v: "func_{args0}^{args1}"},
+		"bigvee": {a: 1, v: "func_{args0}^{args1}"},
+		"bigwedge": {a: 1, v: "func_{args0}^{args1}"},
+		"bigcap": {a: 1, v: "func_{args0}^{args1}"},
+		"bigcup": {a: 1, v: "func_{args0}^{args1}"},
+		"bigsqcup": {a: 1, v: "func_{args0}^{args1}"},
+		"bigotimes": {a: 1, v: "func_{args0}^{args1}"},
+		"bigoplus": {a: 1, v: "func_{args0}^{args1}"},
+		"bigodot": {a: 1, v: "func_{args0}^{args1}"},
+		"biguplus": {a: 1, v: "func_{args0}^{args1}"}
+	},
+	"binOperators": {
+		"mod": {a: 1, v: 0}
+	},
+	"binomialCoefficients": {
+		"binom": {a: 1, v: "func{args0}{args1}"},
+		"choose": {a: 1, v: 0},
+		"dbinom": {a: 1, v: "func{args0}{args1}"},
+		"tbinom": {a: 1, v: "func{args0}{args1}"}
+	},
+	"operators": {
+		"pm": {v: 0},
+		"mp": {v: 0},
+		"times": {v: 0},
+		"arcsin": {v: 0},
+		"arccos": {v: 0},
+		"arctan": {v: 0},
+		"arctg": {v: 0},
+		"arcctg": {v: 0},
+		"arg": {v: 0},
+		"ch": {v: 0},
+		"cos": {v: 0},
+		"cosec": {v: 0},
+		"cosh": {v: 0},
+		"cot": {v: 0},
+		"cotg": {v: 0},
+		"coth": {v: 0},
+		"csc": {v: 0},
+		"ctg": {v: 0},
+		"cth": {v: 0},
+		"deg": {v: 0},
+		"dim": {v: 0},
+		"exp": {v: 0},
+		"hom": {v: 0},
+		"ker": {v: 0},
+		"lg": {v: 0},
+		"ln": {v: 0},
+		"sec": {v: 0},
+		"sin": {v: 0},
+		"sinh": {v: 0},
+		"sh": {v: 0},
+		"tan": {v: 0},
+		"tanh": {v: 0},
+		"tg": {v: 0},
+		"th": {v: 0},
+		"sqrt": {a: 1, v: "func[args1]{args0}"},
+		"log": {a: 1, v: "func_{args0}"},
+		"det": {a: 1, v: "func_{args0}"},
+		"gcd": {a: 1, v: "func_{args0}"},
+		"inf": {a: 1, v: "func_{args0}"},
+		"lim": {a: 1, v: "func_{args0}"},
+		"liminf": {a: 1, v: "func_{args0}"},
+		"limsup": {a: 1, v: "func_{args0}"},
+		"max": {a: 1, v: "func_{args0}"},
+		"min": {a: 1, v: "func_{args0}"},
+		"Pr": {a: 1, v: "func_{args0}"},
+		"sup": {a: 1, v: "func_{args0}"}
+	},
+	"relations": {
+		"==": {v: "equiv"},
+		"equiv": {v: 0},
+		"~=": {v: "approx"},
+		"approx": {v: 0},
+		"approxeq": {v: 0},
+		"asymp": {v: 0},
+		"between": {v: 0},
+		"<=": {v: "leq"},
+		"leq": {v: 0},
+		"=>": {v: "geq"},
+		"geq": {v: 0},
+		"owns": {v: 0},
+		"parallel": {v: 0},
+		"perp": {v: 0},
+		"!=": {v: "neq"},
+		"neq": {v: 0},
+		"nparallel": {v: 0}
+	},
+	"extensibleArrows": {
+		"xrightarrow": {a: 1, v: "func[args1]{args0}"},
+		"xleftarrow": {a: 1, v: "func[args1]{args0}"},
+		"xleftrightarrow": {a: 1, v: "func[args1]{args0}"}
+	},
+	"color": {
+		"color": {a: 1, v: 1},
+		"textcolor": {a: 1, v: 0}
+	},
+	"font": {
+		"mathrm": {a: 1, v: 0},
+		"textrm": {a: 1, v: 0},
+		"rm": {a: 1, v: 0}
+	},
+	"size": {
+		"Huge": {v: 0},
+		"huge ": {v: 0},
+		"LARGE": {v: 0},
+		"Large": {v: 0},
+		"large": {v: 0},
+		"normalsize": {v: 0},
+		"small": {v: 0},
+		"footnotesize": {v: 0},
+		"scriptsize": {v: 0},
+		"tiny": {v: 0		}
+	},
+	"style": {
+		"displaystyle": {a: 1, v: 0},
+		"textstyle": {a: 1, v: 0},
+		"scriptstyle": {a: 1, v: 0},
+		"scriptscriptstyle": {a: 1, v: 0},
+		"text": {a: 1, v: 1},
+		"textnormal": {a: 1, v: 1}
+	},
+	"symbols": {
+		"cdots": {v: 0},
+		"ddots": {v: 0},
+		"ldots": {v: 0},
+		"vdots": {v: 0},
+		"angle": {v: 0},
+		"measuredangle": {v: 0},
+		"sphericalangle": {v: 0},
+		"checkmark": {v: 0},
+		"diagdown": {v: 0},
+		"diagup": {v: 0}
+	}
 };
 
-// Merge functionsByTopic to functions
+/* Merge functionsByTopic to functions */
 let functions = {};
 for (var key in functionsByTopic) {
     if (functionsByTopic.hasOwnProperty(key)) {
@@ -438,31 +409,31 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
         return "";
     }
 
-    // If Expression begins with "\l" return unparsed
+    /* If Expression begins with "\l" return unparsed */
     if(exp.length > 0 && exp.indexOf("\\l") == 0) {
         return exp.substring(2);
     }
 
     let tokens = [];
     let out = "";
-    // Whether the last Token requires to create a new token or not
+    /* Whether the last Token requires to create a new token or not */
     let createNewToken = true;
 
-    // Create a new Array containing only functions, which may be in the Expression
+    /* Create a new Array containing only functions, which may be in the Expression */
     let possibleFunctions = functionsSorted.filter((func) => {
         return exp.indexOf(func) > -1;
     });
 
-    // Main Loop for Tokenizing
-    // Label for continue in first inner loop
+    /* Main Loop for Tokenizing
+      Label for continue in first inner loop */
     loop1:
     for(let i = 0; i < exp.length; i++) {
         let tokenLength = tokens.length;
         let lastToken = tokenLength - 1;
 
-        // Tests if the Expression beginning at Index is equal to a possible Function
-        // If it is a function, parse it and continue after the function, with
-        // the length of the function returned by parseFunction
+        /* Tests if the Expression beginning at Index is equal to a possible Function
+           If it is a function, parse it and continue after the function, with
+           the length of the function returned by parseFunction */
         let expI = exp.substring(i);
 
         for(let j = 0; j < possibleFunctions.length; j++) {
@@ -483,8 +454,8 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
             }
         }
 
-        // If theres a opening parenthesis, get content and add parsed to tokens,
-        // unless it begins with "\l"
+        /* If theres a opening parenthesis, get content and add parsed to tokens,
+           unless it begins with "\l" */
         if(isOpeningParenthesis(exp[i])) {
             let ans = getParentheseInterior(expI);
             i += ans.i;
@@ -496,10 +467,10 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
             }
 
             createNewToken = true;
-        // If this is an Array and/or Matrix Environment and there is a "\n" or " "
-        // replace by "\\" or "&"
-        // If the last Token contains one of these, ignore the new one,
-        // except the last one was "&" and the new one is "\\", then replace the last Token
+        /* If this is an Array and/or Matrix Environment and there is a "\n" or " "
+           replace by "\\" or "&"
+           If the last Token contains one of these, ignore the new one,
+           except the last one was "&" and the new one is "\\", then replace the last Token */
         } else if(arrayEnv && isRowSeparator(exp[i] + exp[i + 1]) || andMatrixEnv && isColumnSeparator(exp[i])) {
             if(i == 0 || i + 1 == exp.length || isColumnSeparator(tokens[lastToken]) || isRowSeparator(tokens[lastToken])) {
                 if(isRowSeparator(exp[i] + exp[i + 1]) && isColumnSeparator(tokens[lastToken])) {
@@ -519,9 +490,9 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
         } else if(isSpecialOp(exp[i])) {
             tokens.push(exp[i]);
             createNewToken = true;
-        // If its nothing from above, add to last Token (if the last token also
-        // was nothing from above), else create new Token
-        // Only here and in the functions allow this addition to the last Token
+        /* If its nothing from above, add to last Token (if the last token also
+           was nothing from above), else create new Token
+           Only here and in the functions allow this addition to the last Token */
         } else {
             if(!createNewToken) {
                 tokens[lastToken] += exp[i];
@@ -533,11 +504,11 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
         }
     }
 
-    // Loop backwards through the Tokens (so that this can handle stacked Expressions like 1^2^3)
-    // and group the Tokens into one
-    // If the Token after the "^" or "_" is a "-", then take the Token after the Minus too
-    // If the base contains Parentheses, keep them (and add the Latex Code for size adjusting),
-    // if the exponent contains Parentheses, remove them (not necessary to show, due to superposition)
+    /* Loop backwards through the Tokens (so that this can handle stacked Expressions like 1^2^3)
+       and group the Tokens into one
+       If the Token after the "^" or "_" is a "-", then take the Token after the Minus too
+       If the base contains Parentheses, keep them (and add the Latex Code for size adjusting),
+       if the exponent contains Parentheses, remove them (not necessary to show, due to superposition) */
     for(let i = tokens.length - 1; i > 0; i--) {
         if(tokens[i] == "^" || tokens[i] == "_") {
             let beginsWithMinus = 1;
@@ -553,10 +524,10 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
         }
     }
 
-    // Loop forwards through the Tokens (so that this can handle stacked Expressions like 1/2/3)
-    // and group the Tokens into one, adding the Latex Code for a Fraction
-    // If the Token after the "^" or "_" is a "-", then take the Token after the Minus too
-    // If the numerator or denominator contains Parentheses, remove them (not necessary to show, due to Fraction Sign)
+    /* Loop forwards through the Tokens (so that this can handle stacked Expressions like 1/2/3)
+       and group the Tokens into one, adding the Latex Code for a Fraction
+       If the Token after the "^" or "_" is a "-", then take the Token after the Minus too
+       If the numerator or denominator contains Parentheses, remove them (not necessary to show, due to Fraction Sign) */
     for(let i = 0; i < tokens.length; i++) {
         if(tokens[i] == "/") {
             let beginsWithMinus = 1;
@@ -572,9 +543,9 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
         }
     }
 
-    // Write the Tokens to the Output String
-    // If there are Parentheses keep them (and add the Latex Code for size adjusting),
-    // unless parsing a Matrix Environment, then remove them
+    /* Write the Tokens to the Output String
+       If there are Parentheses keep them (and add the Latex Code for size adjusting),
+       unless parsing a Matrix Environment, then remove them */
     for(let i = 0; i < tokens.length; i++) {
         if(andMatrixEnv) {
             out += stripParenthese(tokens[i]);
@@ -586,18 +557,18 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
     return out;
 }
 
-// Takes an Expression starting at the function and the function,
-// returns the the length of the parsed Function and the parsed Function
+/* Takes an Expression starting at the function and the function,
+   returns the the length of the parsed Function and the parsed Function */
 function parseFunction(exp, func) {
     let i = func.length;
 
     let token;
-    let arg;
+    let arg = "";
     let args = [];
 
-    // If the Function takes Arguments, check for Parentheses and split the Arguments
-    // Increase the index by the length of the Arguments
-    if(functions[func] >= 20 && isOpeningParenthesis(exp[i])) {
+    /* If the Function takes Arguments, check for Parentheses and split the Arguments
+       Increase the index by the length of the Arguments */
+    if(functions[func].a == 1 && isOpeningParenthesis(exp[i])) {
         let interior = getParentheseInterior(exp.substring(i));
         i += interior.i + 1;
 
@@ -605,39 +576,29 @@ function parseFunction(exp, func) {
         args = splitArgs(arg);
     }
 
-    switch(functions[func]) {
-        case 0: // f
-            token = func + " ";
-            break;
-        case 10: // \f
-            token = "\\" + func + " ";
-            break;
-        case 20:  // \f{0} unparsed
-            token = "\\" + func + "{" + (arg == null ? "" : arg) + "}";
-            break;
-        case 30:  // \f{0}
-            token = "\\" + func + "{" + parseExpression(arg) + "}";
-            break;
-        case 40: // \f{0}{1}
-            token = "\\" + func + "{" + parseExpression(args[0]) + "}{" + parseExpression(args[1]) + "}";
-            break;
-        case 50: // \f_{0}^{1}
-            token = "\\" + func + "_{" + parseExpression(args[0]) + "}^{" + parseExpression(args[1]) + "}";
-            break;
-        case 51: // \f_{0}
-            token = "\\" + func + "_{" + parseExpression(args[0]) + "}";
-            break;
-        case 60: // \f[1]{0}
-            token = "\\" + func + "[" + parseExpression(args[1]) + "]{" + parseExpression(args[0]) + "}";
-            break;
-        case 70: // \begin{f}{1}{0}\end{f}
-            token = "\\begin{" + func + "}{" + parseExpression(args[1]) + "}" + parseExpression(args[0], true) + "\\end{" + func + "}";
-            break;
-        case 71: // \begin{f}{0}\end{f}
-            token = "\\begin{" + func + "}" + parseExpression(arg, true, true) + "\\end{" + func + "}";
-            break;
-        default:
-            token = functions[func];
+	let parsedArg = parseExpression(arg)
+
+    if(functions[func].v == 0) {
+        token = "\\" + func + "{" + parsedArg + "} "
+		if(parsedArg == "") {
+			token = "\\" + func + parsedArg
+		}
+    } else if(functions[func].v == 1) {
+        token = "\\" + func + "{" + arg + "} "
+    } else if(functions[func].v == 2) {
+        token = "\\begin{" + func + "}" + parseExpression(arg, true, true) + "\\end{" + func + "}"
+    } else if(functions[func].v == 3) {
+        token = "\\begin{" + func + "}{" + args[0] + "}" + parseExpression(args[1], true) + "\\end{" + func + "}"
+    } else if(functions[func].v == 4) {
+        token = "\\begin{" + func + "}" + parseExpression(arg, true) + "\\end{" + func + "}"
+    } else {
+        token = "\\" + functions[func].v.replace(/func/g, func).replace(/arg(s[0-9]+|)/g, (a, b) => {
+            if(b != "") {
+                return parseExpression(args[b.substring(1)])
+            } else {
+                return parsedArg
+            }
+        }) + " "
     }
 
     return {
@@ -646,8 +607,8 @@ function parseFunction(exp, func) {
     }
 }
 
-// Takes an Expression starting at a Parenthese and returns the length, the content
-// and the type of the Interior of that Parenthese
+/* Takes an Expression starting at a Parenthese and returns the length, the content
+   and the type of the Interior of that Parenthese */
 function getParentheseInterior(exp) {
     let openingParenthesis = exp[0];
     let closingParenthesis = matchingParentheses[openingParenthesis];
@@ -677,8 +638,8 @@ function getParentheseInterior(exp) {
     }
 }
 
-// Takes an Expression and returns the Arguments, splitten by ","
-// Regards Parentheses
+/* Takes an Expression and returns the Arguments, splitten by ","
+   regards Parentheses */
 function splitArgs(exp) {
     let args = [];
     let parentheses = 0;
@@ -710,8 +671,8 @@ function isOpeningParenthesis(exp) {
     return exp == "(" || exp == "[" || exp == "{";
 }
 
-// If Expression starts with (and ends with matching) Parentheses,
-// remove them, leaving only the Interior
+/* If Expression starts with (and ends with matching) Parentheses,
+   remove them, leaving only the Interior */
 function stripParenthese(exp = "") {
     let end = exp.length - 1;
 
@@ -722,8 +683,8 @@ function stripParenthese(exp = "") {
     return exp;
 }
 
-// If Expression starts with (and ends with matching) Parentheses,
-// add the Latex Code for size adjusting ("\left" and "\right") before the Parentheses
+/* If Expression starts with (and ends with matching) Parentheses,
+   add the Latex Code for size adjusting ("\left" and "\right") before the Parentheses */
 function maybeParenthese(exp = "") {
     let end = exp.length - 1;
 
