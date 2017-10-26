@@ -13,7 +13,7 @@ SimpleLatex.parse("1/23/4^5^67") // -> \frac{\frac{1}{23}}{4^{5^{67}}}
 SimpleLatex.parse("int(a,b)e^x dx") // -> \int_{a}^{b}e^{x} dx
 SimpleLatex.parse("matrix(1 2 3\n 4 5 6\n 7 8 9)") // -> \begin{vmatrix}1&2&3\\4&5&6\\7&8&9\end{vmatrix}
 
-// If you dont want to parse some part of the Expression, write it like this "\l" (\l exp)
+// If you dont want to parse some part of the Expression, write it like this (\l exp)
 SimpleLatex.parse("1/2 + (\l 3/4)") // -> \frac{1}{2} + 3/4
 ```
 
