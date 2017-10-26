@@ -20,7 +20,7 @@ SimpleLatex.parse("1/2 + (\l 3/4)") // -> \frac{1}{2} + 3/4
 You can access the provided functions by topic, in an Array sorted by length or get them all
 
 ```js
-SimpleLatex.functionsByTopic // -> Object {"topic" : {functionName : value, ...}, ...}
+SimpleLatex.functionsByTopic // -> Object {topic : {functionName : value, ...}, ...}
 SimpleLatex.functionsSorted // -> Array [functionName, ...] (sorted by length of functionName, long to short)
 SimpleLatex.functions // -> Object {functionName : value, ...}
 ```
