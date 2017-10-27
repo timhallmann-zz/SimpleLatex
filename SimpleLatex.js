@@ -77,13 +77,13 @@ let functionsByTopic = {
 		"\\|": {a: 1, v: "|"},
 		"\\b": {a: 1, v: "backslash"},
 		"ceil": {a: 1, v: "lfunc arg \\rfunc"},
-		"floor": {a: 1, v: "lfunc arg \\rfunc"},
-		"group": {a: 1, v: "lfunc arg \\rfunc"},
-		"brack": {a: 1, v: "lfunc arg \\rfunc"},
-		"brace": {a: 1, v: "lfunc arg \\rfunc"},
-		"ucorner": {a: 1, v: "ulcorner arg \\urcorner"},
-		"lcorner": {a: 1, v: "llcorner arg \\lrcorner"},
-		"moustache": {a: 1, v: "lfunc arg \\rfunc"},
+		"floor": {a: 1, v: "left\\lfunc arg \\right\\rfunc"},
+		"group": {a: 1, v: "left\\lfunc arg \\right\\rfunc"},
+		"brack": {a: 1, v: "left\\lfunc arg \\right\\rfunc"},
+		"brace": {a: 1, v: "left\\lfunc arg \\right\\rfunc"},
+		"ucorner": {a: 1, v: "left\\ulcorner arg \\right\\urcorner"},
+		"lcorner": {a: 1, v: "left\\llcorner arg \\right\\lrcorner"},
+		"moustache": {a: 1, v: "left\\lfunc arg \\right\\rfunc"},
 		"uparrow": {a: 1, v: 0},
 		"downarrow": {a: 1, v: 0},
 		"updownarrow": {a: 1, v: 0},
@@ -252,7 +252,8 @@ let functionsByTopic = {
 		"biguplus": {a: 1, v: "func_{args0}^{args1}"}
 	},
 	"binOperators": {
-		"mod": {a: 1, v: 0}
+		"mod": {a: 0, v: 0},
+		"bmod": {a: 0, v: 0}
 	},
 	"binomialCoefficients": {
 		"binom": {a: 1, v: "func{args0}{args1}"},
