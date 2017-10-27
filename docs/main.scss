@@ -14,6 +14,12 @@
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
+@media print {
+    body > header, body > main > .material-input, #latex {
+        display: none !important
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -73,14 +79,19 @@ body {
                 .katex-display  {
                     margin: 0;
                     padding-top: 0.5em;
+                    overflow: auto;
 
-                    .katex .katex-html {
-                        & > .strut {
-                            display: none;
-                        }
+                    & > .katex {
+                        margin-bottom: 1em;
 
-                        .base {
-                            display: block;
+                        .katex-html {
+                            & > .strut {
+                                display: none;
+                            }
+
+                            .base {
+                                display: block;
+                            }
                         }
                     }
                 }
@@ -94,14 +105,6 @@ body {
                 word-break: break-all;
             }
         }
-    }
-}
-
-.katex-display {
-    overflow: auto;
-
-    & > .katex {
-        margin-bottom: 1em;
     }
 }
 
