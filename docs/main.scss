@@ -76,23 +76,13 @@ body {
                 text-align: center;
                 font-size: 2em;
 
-                .katex-display  {
-                    margin: 0;
-                    padding-top: 0.5em;
-                    overflow: auto;
+                .katex-display > .katex .katex-html {
+                    & > .strut {
+                        display: none;
+                    }
 
-                    & > .katex {
-                        margin-bottom: 1em;
-
-                        .katex-html {
-                            & > .strut {
-                                display: none;
-                            }
-
-                            .base {
-                                display: block;
-                            }
-                        }
+                    .base {
+                        display: block;
                     }
                 }
             }
