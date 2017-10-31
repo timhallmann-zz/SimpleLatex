@@ -12,7 +12,7 @@ Usage:
 
 SimpleLatex.parse("1/23/4^5^67") // -> \frac{\frac{1}{23}}{4^{5^{67}}}
 SimpleLatex.parse("int(a,b)e^x dx") // -> \int_{a}^{b}e^{x} dx
-SimpleLatex.parse("matrix(1 2 3\n 4 5 6\n 7 8 9)") // -> \begin{vmatrix}1&2&3\\4&5&6\\7&8&9\end{vmatrix}
+SimpleLatex.parse("matrix(1 2 3\n 4 5 6\\ 7 8 9)") // -> \begin{vmatrix}1&2&3\\4&5&6\\7&8&9\end{vmatrix}
 SimpleLatex.parse("1/2 + (\l3/4)") -> \frac{1}{2} + 3/4
 
 MIT License
@@ -68,7 +68,6 @@ let replacements = [
 ];
 
 /* {functionName : replacement || replacementDefault, ...} */
-
 let functionsByTopic = {
 	"accents": {
 		"hat": 1,
@@ -401,7 +400,6 @@ let functionsSorted = Object.keys(functions).sort((a, b) => {
 	return b.length - a.length;
 });
 
-
 /* Main function (gets called if using SimpleLatex.parse)
    Tokenizes the Expression (exp), evaluates the Tokens and joins
    them to the Latex Output
@@ -458,7 +456,7 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
 				|| ["%", "°", "!"].indexOf(char) > -1) {
 			if(["°", "!"].indexOf(char) > -1 && isAlphaNumeric(lastToken)) {
 				tokens[end] += char == "!" ? "!" : functions[char];
-			} else if(char != "\\") {
+			} else if(["%", "°", "!"].indexOf(char) > -1) {
 				tokens.push(char == "!" ? "!" : functions[char]);
 			} else {
 				tokens.push(functions[char + exp[i + 1]]);
@@ -485,7 +483,7 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
 			}
 		}
     }
-
+console.log(tokens)
 	/* Parse Tokens for functions */
 	for(let i = 0; i < tokens.length; i++) {
 		let tok = tokens[i];
@@ -616,7 +614,7 @@ function parseFunction(token = "", arg = "") {
 				/* Otherwise check if the slice is a part of a function.
 				   If there is another possible function, discard the result,
 				   cause of the ambiguity */
-				} else if(k - j > 2) {
+			    } else if(k - j > 2) {
 					for(let l = 0; l < functionsSorted.length; l++) {
 					 	if(functionsSorted[l].indexOf(slice) == 0) {
 							if(func != null) {
