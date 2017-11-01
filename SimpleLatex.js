@@ -1,6 +1,6 @@
 /*
 SimpleLatex
-v1.3.1
+v1.3.2
 
 SimpleLatex provides an slightly easier way for writing mathematical Expressions
 in LaTeX.
@@ -439,6 +439,7 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
 
 	}
 
+	let isLastTokenFunction = false;
     let tokens = [];
     let out = "";
 
@@ -463,12 +464,14 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
 				i++;
 			}
 
+			isLastTokenFunction = true;
+
 			continue;
 		}
 
 		/* If the current part is of the same type, append, otherwise, create new
 		   token */
-		if(isAlphaNumeric(lastToken) && isAlphaNumeric(char)) {
+		if(!isLastTokenFunction && isAlphaNumeric(lastToken) && isAlphaNumeric(char)) {
 			tokens[end] += char;
 		} else {
 			/* If theres a Parenthese add everything in Parenthese (including
@@ -482,6 +485,8 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
 				tokens.push(char);
 			}
 		}
+
+		isLastTokenFunction = false;
     }
 
 	/* Parse Tokens for functions */
