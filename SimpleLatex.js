@@ -488,7 +488,7 @@ function parseExpression(exp, arrayEnv = false, andMatrixEnv = false) {
 
 		isLastTokenFunction = false;
     }
-
+console.log(tokens)
 	/* Parse Tokens for functions */
 	for(let i = 0; i < tokens.length; i++) {
 		let tok = tokens[i];
